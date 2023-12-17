@@ -1,0 +1,1 @@
+package az.ematrix.ticketbot.dto.userDto;import lombok.*;@Data@Builder@NoArgsConstructor@AllArgsConstructorpublic class UserDto  {    private String userName;    private String email;    private String search;}
