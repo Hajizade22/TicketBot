@@ -2,6 +2,7 @@ package az.ematrix.ticketbot.controller;
 
 import az.ematrix.ticketbot.dto.userDto.UserDto;
 import az.ematrix.ticketbot.service.TicketService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ public class TicketController {
     private final TicketService ticketService;
 
     @PostMapping("/save")
-    public UserDto create(@RequestBody UserDto userDto) {
+    public UserDto create(@Valid @RequestBody UserDto userDto) {
         return ticketService.create(userDto);
     }
 

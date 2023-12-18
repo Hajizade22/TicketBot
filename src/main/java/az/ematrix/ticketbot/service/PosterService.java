@@ -19,7 +19,6 @@ public class PosterService {
 
         String url = "https://api.iticket.az/az/v5/events?client=web&category_slug=kids";
 
-        try {
             Connection connection = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3").ignoreContentType(true);
 
             Document document = connection.get();
@@ -35,10 +34,9 @@ public class PosterService {
                 log.info("Found poster URL: {}", posterUrl);
             }
 
-        } catch (IOException e) {
-            log.error("Error while fetching or parsing the document", e);
-            throw e;
-        }
+
+            log.error("Error while fetching or parsing the document");
+
 
         return posterUrls;
     }
@@ -49,7 +47,6 @@ public class PosterService {
 
         String url = "https://api.iticket.az/az/v5/events?client=web&category_slug=concerts";
 
-        try {
             Connection connection = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3").ignoreContentType(true);
 
             Document document = connection.get();
@@ -65,10 +62,9 @@ public class PosterService {
                 log.info("Found poster URL: {}", posterUrl);
             }
 
-        } catch (IOException e) {
-            log.error("Error while fetching or parsing the document", e);
-            throw e;
-        }
+
+            log.error("Error while fetching or parsing the document");
+
 
         return posterUrls;
     }
@@ -78,7 +74,7 @@ public class PosterService {
 
         String url = "https://api.iticket.az/az/v5/events?client=web&category_slug=tourism";
 
-        try {
+
             Connection connection = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3").ignoreContentType(true);
 
             Document document = connection.get();
@@ -94,10 +90,9 @@ public class PosterService {
                 log.info("Found poster URL: {}", posterUrl);
             }
 
-        } catch (IOException e) {
-            log.error("Error while fetching or parsing the document", e);
-            throw e;
-        }
+
+            log.error("Error while fetching or parsing the document");
+
 
         return posterUrls;
     }
@@ -107,7 +102,7 @@ public class PosterService {
 
         String url = "https://api.iticket.az/az/v5/events?client=web&category_slug=" + search;
 
-        try {
+
             Connection connection = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3").ignoreContentType(true);
 
             Document document = connection.get();
@@ -123,10 +118,9 @@ public class PosterService {
                 log.info("Found poster URL: {}", posterUrl);
             }
 
-        } catch (IOException e) {
-            log.error("Error while fetching or parsing the document", e);
-            throw e;
-        }
+
+            log.error("Error while fetching or parsing the document");
+
 
         return posterUrls;
     }

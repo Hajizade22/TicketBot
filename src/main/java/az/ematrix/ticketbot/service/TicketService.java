@@ -2,6 +2,8 @@ package az.ematrix.ticketbot.service;
 import az.ematrix.ticketbot.dto.userDto.UserDto;
 import az.ematrix.ticketbot.entity.TicketSearchDao;
 import az.ematrix.ticketbot.repository.TicketRepository;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -10,6 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +53,7 @@ public class TicketService {
         }
     }
 
-    public UserDto create(UserDto dto) {
+    public UserDto create( UserDto dto) {
         log.info("Creating user with DTO: " + dto.toString());
         TicketSearchDao ticketSearchDao = TicketSearchDao.builder()
                 .userName(dto.getUserName())
