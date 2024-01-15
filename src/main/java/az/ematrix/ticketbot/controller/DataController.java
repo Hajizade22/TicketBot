@@ -1,8 +1,10 @@
 package az.ematrix.ticketbot.controller;
 
 import az.ematrix.ticketbot.service.DataService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +13,8 @@ import java.text.ParseException;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
+@RequestMapping("/data")
 public class DataController {
 
     private final DataService dataService;
@@ -28,7 +32,7 @@ public class DataController {
     public String startEnd(@RequestParam String start,@RequestParam String end) throws IOException {
         return dataService.startAndEnd(start,end);
     }
-    @GetMapping("startWithlocalDate")
+    @GetMapping("startWithLocalDate")
     public String localDate() throws IOException {
         return dataService.startWithLocalDate();
     }

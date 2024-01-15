@@ -42,10 +42,10 @@ public class EventsService {
         return uniqueSlugsArray.toString(2).replace("\n", System.lineSeparator());
     }
 
-    public String processEvents(String categoryInput) throws IOException {
-        log.info("ProcessEvents method called with categoryInput: {}", categoryInput);
+    public String processEvents(String events) throws IOException {
+        log.info("ProcessEvents method called with events: {}", events);
 
-        String url = "https://api.iticket.az/az/v5/events?client=web&category_slug="+categoryInput;
+        String url = "https://api.iticket.az/az/v5/events?client=web&category_slug="+events;
 
         Connection connection = Jsoup.connect(url)
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (HTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
@@ -63,7 +63,7 @@ public class EventsService {
             JSONObject event = (JSONObject) obj;
             String categorySlug = event.getString("category_slug");
 
-            if (categorySlug.equals(categoryInput)) {
+            if (categorySlug.equals(events)) {
                 JSONObject uniqueCategorySlugObject = new JSONObject();
                 uniqueCategorySlugObject.put("category_slug", categorySlug);
 
@@ -80,10 +80,10 @@ public class EventsService {
         return new JSONArray(uniqueCategorySlugsList).toString(2).replace("\n", System.lineSeparator());
     }
 
-    public String ageLimit(String categoryInput) throws IOException {
-        log.info("ProcessEvents method called with categoryInput: {}", categoryInput);
+    public String ageLimit(String ageLimit) throws IOException {
+        log.info("AgeLimit method called with ageLimit: {}", ageLimit);
 
-        String url = "https://api.iticket.az/az/v5/events?client=web&category_slug="+categoryInput;
+        String url = "https://api.iticket.az/az/v5/events?client=web&category_slug="+ageLimit;
 
         Connection connection = Jsoup.connect(url)
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (HTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
@@ -101,9 +101,8 @@ public class EventsService {
             JSONObject event = (JSONObject) obj;
             String categorySlug = event.getString("category_slug");
 
-            if (categorySlug.equals(categoryInput)) {
+            if (categorySlug.equals(ageLimit)) {
                 JSONObject uniqueCategorySlugObject = new JSONObject();
-
 
 
                 if (event.has("venues") && !event.getJSONArray("venues").isEmpty()) {
@@ -118,10 +117,10 @@ public class EventsService {
         return new JSONArray(uniqueCategorySlugsList).toString(2).replace("\n", System.lineSeparator());
     }
 
-    public String where(String categoryInput) throws IOException {
-        log.info("ProcessEvents method called with categoryInput: {}", categoryInput);
+    public String where(String where) throws IOException {
+        log.info("Where method called with where: {}", where);
 
-        String url = "https://api.iticket.az/az/v5/events?client=web&category_slug="+categoryInput;
+        String url = "https://api.iticket.az/az/v5/events?client=web&category_slug="+where;
 
         Connection connection = Jsoup.connect(url)
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (HTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
@@ -139,7 +138,7 @@ public class EventsService {
             JSONObject event = (JSONObject) obj;
             String categorySlug = event.getString("category_slug");
 
-            if (categorySlug.equals(categoryInput)) {
+            if (categorySlug.equals(where)) {
                 JSONObject uniqueCategorySlugObject = new JSONObject();
 
 
@@ -148,7 +147,6 @@ public class EventsService {
                     JSONObject venue = event.getJSONArray("venues").getJSONObject(0);
                     uniqueCategorySlugObject.put("venue_name", venue.getString("name"));
                 }
-                uniqueCategorySlugObject.put("age_limit", event.getString("age_limit"));
                 uniqueCategorySlugObject.put("slug", event.getString("slug"));
                 uniqueCategorySlugsList.add(uniqueCategorySlugObject);
             }

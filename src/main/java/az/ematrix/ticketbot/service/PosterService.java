@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class PosterService {
-    public List<String> kidsPosterUrls() throws IOException {
+    public static List<String> kidsPosterUrls() throws IOException {
         List<String> posterUrls = new ArrayList<>();
 
         String url = "https://api.iticket.az/az/v5/events?client=web&category_slug=kids";
@@ -25,17 +25,17 @@ public class PosterService {
 
             JSONObject jsonResponse = new JSONObject(document.text());
             JSONObject eventsObject = jsonResponse.getJSONObject("response").getJSONObject("events");
-            JSONArray eventsArray = eventsObject.getJSONArray("data");
+            JSONArray kidsPosterArray = eventsObject.getJSONArray("data");
 
-            for (int i = 0; i < eventsArray.length(); i++) {
-                JSONObject eventObject = eventsArray.getJSONObject(i);
+           for (int i = 0; i < kidsPosterArray.length(); i++) {
+                JSONObject eventObject = kidsPosterArray.getJSONObject(i);
                 String posterUrl = eventObject.getString("poster_url");
                 posterUrls.add(posterUrl);
                 log.info("Found poster URL: {}", posterUrl);
             }
 
 
-            log.error("Error while fetching or parsing the document");
+            log.error("Error while fetching or parsing the document");// poster url tapilmasa islemelidir.
 
 
         return posterUrls;
@@ -53,10 +53,10 @@ public class PosterService {
 
             JSONObject jsonResponse = new JSONObject(document.text());
             JSONObject eventsObject = jsonResponse.getJSONObject("response").getJSONObject("events");
-            JSONArray eventsArray = eventsObject.getJSONArray("data");
+            JSONArray concertsPosterArray = eventsObject.getJSONArray("data");
 
-            for (int i = 0; i < eventsArray.length(); i++) {
-                JSONObject eventObject = eventsArray.getJSONObject(i);
+            for (int i = 0; i < concertsPosterArray.length(); i++) {
+                JSONObject eventObject = concertsPosterArray.getJSONObject(i);
                 String posterUrl = eventObject.getString("poster_url");
                 posterUrls.add(posterUrl);
                 log.info("Found poster URL: {}", posterUrl);
@@ -81,10 +81,10 @@ public class PosterService {
 
             JSONObject jsonResponse = new JSONObject(document.text());
             JSONObject eventsObject = jsonResponse.getJSONObject("response").getJSONObject("events");
-            JSONArray eventsArray = eventsObject.getJSONArray("data");
+            JSONArray tourismPosterArray = eventsObject.getJSONArray("data");
 
-            for (int i = 0; i < eventsArray.length(); i++) {
-                JSONObject eventObject = eventsArray.getJSONObject(i);
+            for (int i = 0; i < tourismPosterArray.length(); i++) {
+                JSONObject eventObject = tourismPosterArray.getJSONObject(i);
                 String posterUrl = eventObject.getString("poster_url");
                 posterUrls.add(posterUrl);
                 log.info("Found poster URL: {}", posterUrl);

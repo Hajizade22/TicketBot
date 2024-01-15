@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface TicketRepository extends JpaRepository<TicketSearchDao,Long> {
-    Optional<TicketSearchDao> findById(Long id);
+
 
 }

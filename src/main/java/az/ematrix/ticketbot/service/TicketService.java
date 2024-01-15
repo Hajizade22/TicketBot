@@ -2,8 +2,6 @@ package az.ematrix.ticketbot.service;
 import az.ematrix.ticketbot.dto.userDto.UserDto;
 import az.ematrix.ticketbot.entity.TicketSearchDao;
 import az.ematrix.ticketbot.repository.TicketRepository;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -24,7 +22,6 @@ public class TicketService {
 
     private final MailService mailService;
     private final TicketRepository ticketRepository;
-
 
     @Scheduled(fixedRate = 30000)
     public void checkEvents() throws IOException {
@@ -53,7 +50,7 @@ public class TicketService {
         }
     }
 
-    public UserDto create( UserDto dto) {
+    public void create( UserDto dto) {
         log.info("Creating user with DTO: " + dto.toString());
         TicketSearchDao ticketSearchDao = TicketSearchDao.builder()
                 .userName(dto.getUserName())
@@ -61,13 +58,8 @@ public class TicketService {
                 .search(dto.getSearch())
                 .build();
 
-        TicketSearchDao save = ticketRepository.save(ticketSearchDao);
+        ticketRepository.save(ticketSearchDao);
         log.info("User created successfully.");
-        return UserDto.builder()
-                .userName(save.getUserName())
-                .email(save.getEmail())
-                .search(save.getSearch())
-                .build();
     }
 
     public List<UserDto> findAll() {
