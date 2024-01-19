@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,15 +14,15 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('admin')")
 @SecurityRequirement(name = "Bearer Authentication")
-@RequestMapping("/tickets") // controllerler++
+@RequestMapping("/tickets")
 public class TicketController {
 
     private final TicketService ticketService;
 
     @PostMapping
     public void create(@Valid @RequestBody UserDto userDto) {
-
         ticketService.create(userDto);
     }
 
@@ -31,7 +32,7 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable Long id) {//digerlerinde
+    public ResponseEntity<Object> findById(@PathVariable Long id) {
         UserDto user = ticketService.findById(id);
         if (user != null) {
             return ResponseEntity.ok(user);

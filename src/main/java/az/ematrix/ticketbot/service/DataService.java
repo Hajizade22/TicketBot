@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ import java.util.stream.StreamSupport;
 @Service
 @Slf4j
 public class DataService {
-    public String start(String startDate) throws IOException {
+    public ResponseEntity<String> start(String startDate) throws IOException {
         log.info("Start method called with startDate: {}", startDate);
 
         String url = "https://api.iticket.az/az/v5/events?client=web";
@@ -38,10 +39,10 @@ public class DataService {
                 .collect(Collectors.toList());
 
         JSONArray startArray = new JSONArray(eventsStartAt);
-        return startArray.toString(2).replace("\n", System.lineSeparator());
+        return ResponseEntity.ok(startArray.toString(2).replace("\n", System.lineSeparator()));
     }
 
-    public String end(String endDate) throws IOException {
+    public ResponseEntity<String> end(String endDate) throws IOException {
         log.info("End method called with endDate: {}", endDate);
 
         String url = "https://api.iticket.az/az/v5/events?client=web";
@@ -60,10 +61,10 @@ public class DataService {
                 .collect(Collectors.toList());
 
         JSONArray endArray = new JSONArray(eventsEndsAT);
-        return endArray.toString(2).replace("\n", System.lineSeparator());
+        return ResponseEntity.ok(endArray.toString(2).replace("\n", System.lineSeparator()));
     }
 
-    public String startAndEnd(String startDate, String endDate) throws IOException {
+    public ResponseEntity<String> startAndEnd(String startDate, String endDate) throws IOException {
         log.info("StartAndEnd method called with startDate: {} and endDate: {}", startDate, endDate);
 
         String url = "https://api.iticket.az/az/v5/events?client=web";
@@ -89,10 +90,10 @@ public class DataService {
                 .collect(Collectors.toList());
 
         JSONArray startEndArray = new JSONArray(startAndEnd);
-        return startEndArray.toString(2).replace("\n", System.lineSeparator());
+        return ResponseEntity.ok(startEndArray.toString(2).replace("\n", System.lineSeparator()));
     }
 
-    public String startWithLocalDate() throws IOException {
+    public ResponseEntity<String> startWithLocalDate() throws IOException {
         log.info("StartWithLocalDate method called");
 
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -115,7 +116,7 @@ public class DataService {
                 .collect(Collectors.toList());
 
         JSONArray localDateArray = new JSONArray(filteredEvents);
-        return localDateArray.toString(2).replace("\n", System.lineSeparator());
+        return ResponseEntity.ok(localDateArray.toString(2).replace("\n", System.lineSeparator()));
     }
 }
 

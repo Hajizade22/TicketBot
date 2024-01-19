@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class GlobalExceptionHandler {
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<String> handleException(Exception e) {
-//        log.error("An error occurred: {}", e.getMessage(), e);
-//        return new ResponseEntity<>("Service is undergoing maintenance. Please try again later.", HttpStatus.BAD_REQUEST);
-//    }
-    //ikisini bir yerde
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e) {
+        log.error("An error occurred: {}", e.getMessage(), e);
+        return new ResponseEntity<>("Service is undergoing maintenance. Please try again later.", HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException e) {

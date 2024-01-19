@@ -10,7 +10,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +49,7 @@ public class TicketService {
         }
     }
 
-    public void create( UserDto dto) {
+    public void create(UserDto dto) {
         log.info("Creating user with DTO: " + dto.toString());
         TicketSearchDao ticketSearchDao = TicketSearchDao.builder()
                 .userName(dto.getUserName())
@@ -67,13 +66,13 @@ public class TicketService {
         List<TicketSearchDao> ticketSearchDaoList = ticketRepository.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
 
-        for (TicketSearchDao ticket: ticketSearchDaoList){
-            UserDto userDto= UserDto.builder()
+        for (TicketSearchDao ticket : ticketSearchDaoList) {
+            UserDto userDto = UserDto.builder()
                     .userName(ticket.getUserName())
                     .email(ticket.getEmail())
                     .search(ticket.getSearch())
                     .build();
-                    userDtoList.add(userDto);
+            userDtoList.add(userDto);
         }
         log.info("Found " + userDtoList.size() + " users");
         return userDtoList;
@@ -82,7 +81,6 @@ public class TicketService {
     public UserDto findById(Long id) {
         log.info("Finding user by ID: " + id);
         TicketSearchDao ticketSearchDao = ticketRepository.findById(id).orElse(null);
-
 
         return UserDto.builder()
                 .userName(ticketSearchDao.getUserName())
@@ -94,20 +92,19 @@ public class TicketService {
     public UserDto update(Long id, UserDto userDto) {
         log.info("Updating user with ID: " + id);
         TicketSearchDao existingUser = ticketRepository.findById(id).orElse(null);
-           existingUser.setUserName(userDto.getUserName());
-           existingUser.setEmail(userDto.getEmail());
-           existingUser.setSearch(userDto.getSearch());
+        existingUser.setUserName(userDto.getUserName());
+        existingUser.setEmail(userDto.getEmail());
+        existingUser.setSearch(userDto.getSearch());
 
-           TicketSearchDao save=ticketRepository.save(existingUser);
+        TicketSearchDao save = ticketRepository.save(existingUser);
 
-            log.info("User updated successfully");
+        log.info("User updated successfully");
         return UserDto.builder()
                 .userName(save.getUserName())
                 .email(save.getEmail())
                 .search(save.getEmail())
                 .build();
-        }
-
+    }
 
     public void delete() {
         log.info("Deleting all users");

@@ -3,10 +3,8 @@ package az.ematrix.ticketbot.controller;
 import az.ematrix.ticketbot.service.PlaceService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -18,25 +16,25 @@ public class PlaceController {
 
     private final PlaceService placeService;
 
-    @GetMapping("places")
-    public String place() throws IOException {
+    @GetMapping
+    public ResponseEntity<String> place() throws IOException {
         return placeService.places();
     }
-    @GetMapping("map")
-    public String map(@RequestParam int id)throws IOException{
+
+    @GetMapping("map/{id}")
+    public ResponseEntity<String> map(@PathVariable Long id) throws IOException {
         return placeService.map(id);
     }
-    @GetMapping("phone")
-    public String phone(@RequestParam int id)throws IOException{
+
+    @GetMapping("phone/{id}")
+    public ResponseEntity<String> phone(@PathVariable Long id) throws IOException {
         return placeService.phone(id);
     }
 
-    @GetMapping("mobile")
-    public String mobile(@RequestParam int id)throws IOException{
+    @GetMapping("mobile/{id}")
+    public ResponseEntity<String> mobile(@PathVariable Long id) throws IOException {
         return placeService.mobile(id);
     }
-
-
 
 
 }

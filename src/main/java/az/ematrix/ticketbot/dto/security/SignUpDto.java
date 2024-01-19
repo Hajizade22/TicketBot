@@ -13,10 +13,10 @@ public class SignUpDto {
     private String role;
 
 
-    public SignUpDto(String email, String password) {
+    public SignUpDto(String email, String password,String role) {
         this.email = email;
         this.password = password;
-
+        this.role=role;
     }
 
 }

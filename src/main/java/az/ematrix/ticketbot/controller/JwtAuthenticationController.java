@@ -73,8 +73,6 @@ public class JwtAuthenticationController {
 
 	}
 
-
-
 	private void authenticate(String username, String password) throws Exception {
 		Objects.requireNonNull(username);
 		Objects.requireNonNull(password);

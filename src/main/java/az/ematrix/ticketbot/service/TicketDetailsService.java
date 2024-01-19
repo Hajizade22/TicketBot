@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,10 +18,10 @@ import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
-public class MoneyService {
+public class TicketDetailsService {
 
-    public String min(int min) throws IOException {
-        log.info("Min method called with min: {}", min);
+    public ResponseEntity<String> ticketDetailsWithMinPrice(double minPrice) throws IOException {
+        log.info("Min method called with ticketDetailsWithMaxPrice: {}", minPrice);
 
         String url = "https://api.iticket.az/az/v5/events?client=web";
 
@@ -33,7 +35,7 @@ public class MoneyService {
 
         List<JSONObject> filteredMinimum = StreamSupport.stream(minArray.spliterator(), true)
                 .map(obj -> (JSONObject) obj)
-                .filter(minimum -> minimum.getInt("min_price") >= min)
+                .filter(minimum -> minimum.getDouble("min_price") >= minPrice)
 //                .map(event -> {
 //                    JSONObject result = new JSONObject();
 //                    result.put("poster_bg_url", event.getString("poster_bg_url"));
@@ -43,11 +45,11 @@ public class MoneyService {
                 .collect(Collectors.toList());
 
         JSONArray filteredMinimumPrice = new JSONArray(filteredMinimum);
-        return filteredMinimumPrice.toString(2).replace("\n", System.lineSeparator());
+        return ResponseEntity.ok(filteredMinimumPrice.toString(2).replace("\n", System.lineSeparator()));
     }
 
-    public String max(int max) throws IOException {
-        log.info("Max method called with max: {}", max);
+    public ResponseEntity<String> ticketDetailsWithMaxPrice(double maxPrice) throws IOException {
+        log.info("Max method called with ticketDetailsWithMaxPrice: {}", maxPrice);
 
         String url = "https://api.iticket.az/az/v5/events?client=web";
 
@@ -61,7 +63,7 @@ public class MoneyService {
 
         List<JSONObject> filteredMaxPrice = StreamSupport.stream(maxArray.spliterator(), true)
                 .map(obj -> (JSONObject) obj)
-                .filter(maximum -> maximum.getInt("max_price") <= max)
+                .filter(maximum -> maximum.getDouble("max_price") <= maxPrice)
 //                .map(event -> {
 //                    JSONObject result = new JSONObject();
 //                    result.put("poster_bg_url", event.getString("poster_bg_url"));
@@ -70,12 +72,12 @@ public class MoneyService {
 //                })
                 .collect(Collectors.toList());
 
-        JSONArray maxPrice = new JSONArray(filteredMaxPrice);
-        return maxPrice.toString(2).replace("\n", System.lineSeparator());
+        JSONArray maxPriceArray = new JSONArray(filteredMaxPrice);
+        return ResponseEntity.ok(maxPriceArray.toString(2).replace("\n", System.lineSeparator()));
     }
 
-    public String price(int min, int max) throws IOException {
-        log.info("Price method called with min and max: {}", min, max);
+    public ResponseEntity<String> ticketDetailsWithMinAndMaxPrice(double minPrice, double maxPrice) throws IOException {
+        log.info("Price method called with ticketDetailsWithMinAndMaxPrice: {}", minPrice, maxPrice);
 
         String url = "https://api.iticket.az/az/v5/events?client=web";
 
@@ -89,8 +91,8 @@ public class MoneyService {
 
         List<JSONObject> filteredPrice = StreamSupport.stream(priceArray.spliterator(), true)
                 .map(obj -> (JSONObject) obj)
-                .filter(minPrice -> minPrice.getInt("min_price") >= min)
-                .filter(maxPrice -> maxPrice.getInt("max_price") <= max)
+                .filter(min -> min.getDouble("min_price") >= minPrice)
+                .filter(max -> max.getDouble("max_price") <= maxPrice)
                 .map(event -> {
                     JSONObject result = new JSONObject();
                     result.put("poster_bg_url", event.getString("poster_bg_url"));
@@ -100,10 +102,10 @@ public class MoneyService {
                 .collect(Collectors.toList());
 
         JSONArray filteredPriceArray = new JSONArray(filteredPrice);
-        return filteredPriceArray.toString(2).replace("\n", System.lineSeparator());
+        return ResponseEntity.ok(filteredPriceArray.toString(2).replace("\n", System.lineSeparator()));
     }
 
-    public String findMaxPrice() throws IOException {
+    public ResponseEntity<String> findMaxPrice() throws IOException {
         log.info("MaxPrice method called to find the maximum price");
 
         String url = "https://api.iticket.az/az/v5/events?client=web";
@@ -130,9 +132,9 @@ public class MoneyService {
                     .collect(Collectors.toList());
 
             JSONArray maximumPriceArray = new JSONArray(maxPriceFind);
-            return maximumPriceArray.toString(2).replace("\n", System.lineSeparator());
+            return ResponseEntity.ok(maximumPriceArray.toString(2).replace("\n", System.lineSeparator()));
         } else {
-            return "No events found";
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

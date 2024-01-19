@@ -6,7 +6,10 @@ import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +17,12 @@ import java.util.List;
 @Service
 @Slf4j
 public class PosterService {
-    public static List<String> kidsPosterUrls() throws IOException {
+    public  ResponseEntity<?> kidsPosterUrls() {
         List<String> posterUrls = new ArrayList<>();
 
         String url = "https://api.iticket.az/az/v5/events?client=web&category_slug=kids";
 
+        try {
             Connection connection = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3").ignoreContentType(true);
 
             Document document = connection.get();
@@ -27,26 +31,28 @@ public class PosterService {
             JSONObject eventsObject = jsonResponse.getJSONObject("response").getJSONObject("events");
             JSONArray kidsPosterArray = eventsObject.getJSONArray("data");
 
-           for (int i = 0; i < kidsPosterArray.length(); i++) {
+            for (int i = 0; i < kidsPosterArray.length(); i++) {
                 JSONObject eventObject = kidsPosterArray.getJSONObject(i);
                 String posterUrl = eventObject.getString("poster_url");
                 posterUrls.add(posterUrl);
                 log.info("Found poster URL: {}", posterUrl);
             }
+        } catch (IOException e) {
+            log.error("Error while fetching or parsing the document for kids events", e);
+            return new ResponseEntity<>(HttpStatus.FAILED_DEPENDENCY);
+        }
 
+        return ResponseEntity.ok(posterUrls);
 
-            log.error("Error while fetching or parsing the document");// poster url tapilmasa islemelidir.
-
-
-        return posterUrls;
     }
 
 
-    public List<String> concertsPosterUrls() throws IOException {
+    public ResponseEntity<?> concertsPosterUrls() {
         List<String> posterUrls = new ArrayList<>();
 
         String url = "https://api.iticket.az/az/v5/events?client=web&category_slug=concerts";
 
+        try {
             Connection connection = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3").ignoreContentType(true);
 
             Document document = connection.get();
@@ -61,20 +67,20 @@ public class PosterService {
                 posterUrls.add(posterUrl);
                 log.info("Found poster URL: {}", posterUrl);
             }
+        } catch (IOException e) {
+            log.error("Error while fetching or parsing the document for kids events", e);
+            return new ResponseEntity<>(HttpStatus.FAILED_DEPENDENCY);
+        }
 
-
-            log.error("Error while fetching or parsing the document");
-
-
-        return posterUrls;
+        return ResponseEntity.ok(posterUrls);
     }
 
-    public List<String> tourismPosterUrls() throws IOException {
+    public ResponseEntity<?> tourismPosterUrls() {
         List<String> posterUrls = new ArrayList<>();
 
         String url = "https://api.iticket.az/az/v5/events?client=web&category_slug=tourism";
 
-
+        try {
             Connection connection = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3").ignoreContentType(true);
 
             Document document = connection.get();
@@ -89,20 +95,19 @@ public class PosterService {
                 posterUrls.add(posterUrl);
                 log.info("Found poster URL: {}", posterUrl);
             }
-
-
-            log.error("Error while fetching or parsing the document");
-
-
-        return posterUrls;
+        } catch (IOException e) {
+            log.error("Error while fetching or parsing the document for kids events", e);
+            return new ResponseEntity<>(HttpStatus.FAILED_DEPENDENCY);
+        }
+        return ResponseEntity.ok(posterUrls);
     }
 
-    public List<String> searchPicture(String search) throws IOException {
+    public ResponseEntity<?> searchPicture(String search) {
         List<String> posterUrls = new ArrayList<>();
 
         String url = "https://api.iticket.az/az/v5/events?client=web&category_slug=" + search;
 
-
+        try {
             Connection connection = Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3").ignoreContentType(true);
 
             Document document = connection.get();
@@ -118,11 +123,12 @@ public class PosterService {
                 log.info("Found poster URL: {}", posterUrl);
             }
 
+        } catch (IOException e) {
+            log.error("Error while fetching or parsing the document for kids events", e);
+            return new ResponseEntity<>(HttpStatus.FAILED_DEPENDENCY);
 
-            log.error("Error while fetching or parsing the document");
-
-
-        return posterUrls;
+        }
+        return ResponseEntity.ok(posterUrls);
     }
 }
 

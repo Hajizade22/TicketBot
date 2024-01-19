@@ -3,12 +3,8 @@ package az.ematrix.ticketbot.controller;
 import az.ematrix.ticketbot.service.PosterService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import java.io.IOException;
-import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,22 +15,22 @@ public class PosterController {
     private final PosterService eventsPictureService;
 
     @GetMapping("kids")
-    public List<String> pictureOfKids() throws IOException {
-        return PosterService.kidsPosterUrls();
+    public ResponseEntity<?> pictureOfKids() {
+        return ResponseEntity.ok(eventsPictureService.kidsPosterUrls());
     }
 
     @GetMapping("concerts")
-    public List<String> pictureOfConcerts() throws IOException {
-        return eventsPictureService.concertsPosterUrls();
+    public ResponseEntity<?> pictureOfConcerts() {
+        return ResponseEntity.ok(eventsPictureService.concertsPosterUrls());
     }
 
     @GetMapping("tourism")
-    public List<String> pictureOfTourism() throws IOException {
-        return eventsPictureService.tourismPosterUrls();
+    public ResponseEntity<?> pictureOfTourism() {
+        return ResponseEntity.ok(eventsPictureService.tourismPosterUrls());
     }
 
-    @GetMapping("search")
-    public List<String> searchPicture(@RequestParam String search) throws IOException {
-        return eventsPictureService.searchPicture(search);
+    @GetMapping("/{search}")
+    public ResponseEntity<?> searchPicture(@PathVariable String search) {
+        return ResponseEntity.ok(eventsPictureService.searchPicture(search));
     }
 }
